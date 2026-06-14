@@ -1,0 +1,166 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.auth-form {
+  background: white;
+  padding: 30px;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.auth-form p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.profile-page .profile-form {
+  max-width: 420px;
+}
+
+.profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.register-avatar-section {
+  margin-bottom: 16px;
+}
+
+.profile-file-input {
+  display: none;
+}
+
+.profile-avatar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.profile-btn {
+  width: auto !important;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #0078ff;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-btn-secondary {
+  background: #666;
+}
+
+.profile-field {
+  margin-bottom: 16px;
+}
+
+.profile-field label {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-field p {
+  margin: 0;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+}
+
+.profile-page {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-page .profile-form {
+  width: 100%;
+  max-width: 480px;
+}
+
+.profile-error {
+  color: #c0392b;
+  font-size: 14px;
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.profile-logout-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.profile-logout-btn:hover {
+  background: #f9fafb;
+}
+
+.profile-back-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 8px;
+}
+
+.profile-link-row {
+  margin-top: 12px;
+}

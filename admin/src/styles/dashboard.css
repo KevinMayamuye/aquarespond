@@ -1,0 +1,236 @@
+.dashboard-page {
+  padding: 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 8px;
+}
+
+.dashboard-header p {
+  margin: 0 0 24px;
+  color: #6b7280;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(180px, 1fr)
+  );
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 4px;
+  color: #5b21b6;
+}
+
+.stat-card span {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dashboard-link-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #7c3aed;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-row select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.data-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.data-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-under_review {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-resolved,
+.status-completed,
+.status-accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-dismissed,
+.status-cancelled,
+.status-declined {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.card-actions button,
+.card-actions select,
+.card-actions textarea {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.card-actions button {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.card-actions textarea {
+  width: 100%;
+  min-height: 72px;
+  resize: vertical;
+}
+
+.assign-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.assign-row select {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.assign-row button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #7c3aed;
+  color: #fff;
+  cursor: pointer;
+}
+
+.assign-row .secondary-btn {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.card-meta {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 8px 0 0;
+}
+
+.report-photo {
+  max-width: 240px;
+  max-height: 160px;
+  border-radius: 8px;
+  margin-top: 12px;
+  object-fit: cover;
+}
+
+.empty-state {
+  color: #6b7280;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.users-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.users-table tr:last-child td {
+  border-bottom: none;
+}
+
+.toggle-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.toggle-btn.available {
+  color: #059669;
+}
+
+.toggle-btn.unavailable {
+  color: #dc2626;
+}
