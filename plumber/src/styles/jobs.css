@@ -121,3 +121,43 @@
   background: #fff;
   font-size: 14px;
 }
+
+@media (max-width: 768px) {
+  .jobs-page {
+    padding: 16px;
+  }
+
+  .job-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job-actions {
+    flex-wrap: wrap;
+  }
+
+  .job-actions button {
+    min-height: 44px;
+    flex: 1 1 auto;
+  }
+
+  .report-status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .report-status-row select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .job-actions {
+    flex-direction: column;
+  }
+
+  .job-actions button {
+    width: 100%;
+  }
+}

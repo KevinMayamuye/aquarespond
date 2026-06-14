@@ -85,3 +85,26 @@
 .dashboard-link-btn:hover {
   background: #1d4ed8;
 }
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(140px, 1fr)
+    );
+    gap: 12px;
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-link-btn {
+    text-align: center;
+  }
+}

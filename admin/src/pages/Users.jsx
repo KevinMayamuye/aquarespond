@@ -124,7 +124,8 @@ const Users = () => {
           No users found.
         </p>
       ) : (
-        <table className="users-table">
+        <div className="users-table-wrap">
+          <table className="users-table">
           <thead>
             <tr>
               <th>Username</th>
@@ -170,6 +171,7 @@ const Users = () => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );
