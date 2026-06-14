@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const API_URL =
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000";
+  (import.meta.env.DEV
+    ? "http://localhost:5000"
+    : "https://aquarespond-production.up.railway.app");
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
