@@ -233,7 +233,8 @@ export const markChatAsRead = async (req, res) => {
 
     const chatAccess =
       await assertChatMessagingAllowed(
-        req.params.chatId
+        req.params.chatId,
+        req.user
       );
 
     if (!chatAccess.allowed) {
@@ -295,7 +296,10 @@ export const sendMessage = async (req, res) => {
     }
 
     const chatAccess =
-      await assertChatMessagingAllowed(chatId);
+      await assertChatMessagingAllowed(
+        chatId,
+        req.user
+      );
 
     if (!chatAccess.allowed) {
       return res.status(403).json({
@@ -680,7 +684,8 @@ export const getMessages = async (req, res) => {
 
     const chatAccess =
       await assertChatMessagingAllowed(
-        req.params.chatId
+        req.params.chatId,
+        req.user
       );
 
     if (!chatAccess.allowed) {

@@ -100,7 +100,12 @@ const Users = () => {
       </header>
 
       <div className="filter-row">
+        <label htmlFor="users-role-filter">
+          Role
+        </label>
         <select
+          id="users-role-filter"
+          name="roleFilter"
           value={roleFilter}
           onChange={handleFilterChange}
         >
@@ -137,7 +142,7 @@ const Users = () => {
                 <td>{user.role}</td>
                 <td>
                   {user.role === "plumber"
-                    ? `${user.serviceArea || "—"} · ${user.isAvailable ? "Available" : "Unavailable"}`
+                    ? `${user.serviceArea || "—"} · ${user.isAvailable ? "Available" : "Unavailable"} · ${user.ratingCount ? `${user.averageRating?.toFixed(1)} ★ (${user.ratingCount})` : "No ratings"}`
                     : "—"}
                 </td>
                 <td>

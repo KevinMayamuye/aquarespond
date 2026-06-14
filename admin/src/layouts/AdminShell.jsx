@@ -49,6 +49,20 @@ const AdminShell = () => {
             Bookings
           </NavLinkWithDot>
 
+          <NavLinkWithDot
+            to="/dashboard/ratings"
+            dotKey="ratings"
+          >
+            Ratings
+          </NavLinkWithDot>
+
+          <NavLinkWithDot
+            to="/dashboard/chat"
+            dotKey="chat"
+          >
+            Chat
+          </NavLinkWithDot>
+
           <NavLink
             to="/dashboard/profile"
             className={({ isActive }) =>

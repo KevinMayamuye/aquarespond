@@ -172,7 +172,14 @@ const ReportAssignments = () => {
             )}
 
             <div className="report-status-row">
+              <label
+                htmlFor={`report-status-${report._id}`}
+              >
+                Report status
+              </label>
               <select
+                id={`report-status-${report._id}`}
+                name="status"
                 value={report.status}
                 onChange={(e) =>
                   handleStatusChange(

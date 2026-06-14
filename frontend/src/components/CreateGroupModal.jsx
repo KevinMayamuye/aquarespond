@@ -147,7 +147,15 @@ const CreateGroupModal = ({
           </button>
         </div>
 
+        <label
+          htmlFor="group-name"
+          className="visually-hidden"
+        >
+          Group name
+        </label>
         <input
+          id="group-name"
+          name="groupName"
           type="text"
           className="modal-search"
           placeholder="Group name"
@@ -216,7 +224,15 @@ const CreateGroupModal = ({
           Search users
         </h4>
 
+        <label
+          htmlFor="group-member-search"
+          className="visually-hidden"
+        >
+          Search users
+        </label>
         <input
+          id="group-member-search"
+          name="memberSearch"
           type="text"
           className="modal-search"
           placeholder="Search by username..."

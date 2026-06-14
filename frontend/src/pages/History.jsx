@@ -6,6 +6,7 @@ import { getBookingHistory } from "../services/bookingService";
 import { socket } from "../socket/socket";
 
 import BookingList from "../components/BookingList";
+import RatingModal from "../components/RatingModal";
 
 import "../styles/book.css";
 
@@ -14,6 +15,8 @@ const History = () => {
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ratingBooking, setRatingBooking] =
+    useState(null);
 
   const loadHistory = async () => {
     try {
@@ -79,6 +82,10 @@ const History = () => {
     });
   };
 
+  const handleRatingSubmitted = async () => {
+    await loadHistory();
+  };
+
   if (loading) {
     return (
       <div className="book-page">
@@ -102,8 +109,17 @@ const History = () => {
           bookings={bookings}
           variant="history"
           onRebook={handleRebook}
+          onRate={setRatingBooking}
         />
       </section>
+
+      {ratingBooking && (
+        <RatingModal
+          booking={ratingBooking}
+          onClose={() => setRatingBooking(null)}
+          onSubmitted={handleRatingSubmitted}
+        />
+      )}
     </div>
   );
 };

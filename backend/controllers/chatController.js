@@ -8,9 +8,15 @@ import {
   findOrCreateDirectChat,
   attachUnreadCounts,
 } from "../utils/findOrCreateDirectChat.js";
+import { ensureSupportChat } from "../utils/ensureSupportChat.js";
+import { getSupportAdmin } from "../utils/supportAdmin.js";
+import {
+  enrichChat,
+  sortChatsWithSupportFirst,
+} from "../utils/chatEnrichment.js";
 
 const participantFields =
-  "username email isOnline lastSeen profilePicture";
+  "username email isOnline lastSeen profilePicture role";
 
 const BOOKING_ONLY_ROLES = ["customer", "plumber"];
 
@@ -32,62 +38,179 @@ const populateChat = (query) =>
 
 const attachUnreadCountsLocal = attachUnreadCounts;
 
+const chatToObject = (chat) =>
+  chat.toObject?.() ?? chat;
+
+const getBookingChatsForUser = async (userId) => {
+  const activeBookings = await Booking.find({
+    status: "accepted",
+    $or: [
+      { customer: userId },
+      { plumber: userId },
+    ],
+    chat: { $ne: null },
+  }).select(
+    "_id status scheduledAt serviceType chat"
+  );
+
+  const chatIds = [
+    ...new Set(
+      activeBookings.map((booking) =>
+        booking.chat.toString()
+      )
+    ),
+  ];
+
+  const bookingByChatId = {};
+
+  for (const booking of activeBookings) {
+    bookingByChatId[booking.chat.toString()] = {
+      _id: booking._id,
+      status: booking.status,
+      scheduledAt: booking.scheduledAt,
+      serviceType: booking.serviceType,
+    };
+  }
+
+  if (chatIds.length === 0) {
+    return { chats: [], bookingByChatId };
+  }
+
+  const chats = await populateChat(
+    Chat.find({
+      _id: { $in: chatIds },
+      participants: userId,
+    })
+  ).sort({ updatedAt: -1 });
+
+  return { chats, bookingByChatId };
+};
+
 export const getChats = async (req, res) => {
   try {
-    const activeBookings = await Booking.find({
-      status: "accepted",
-      $or: [
-        { customer: req.user._id },
-        { plumber: req.user._id },
-      ],
-      chat: { $ne: null },
-    }).select(
-      "_id status scheduledAt serviceType chat"
-    );
+    const supportAdmin = await getSupportAdmin();
+    const supportAdminId = supportAdmin?._id ?? null;
 
-    const chatIds = [
-      ...new Set(
-        activeBookings.map((booking) =>
-          booking.chat.toString()
-        )
-      ),
-    ];
+    if (req.user.role === "admin") {
+      const chats = await populateChat(
+        Chat.find({
+          participants: req.user._id,
+          isGroup: { $ne: true },
+        })
+      ).sort({ updatedAt: -1 });
 
-    if (chatIds.length === 0) {
-      return res.status(200).json([]);
+      const chatsWithUnread =
+        await attachUnreadCountsLocal(
+          chats,
+          req.user._id
+        );
+
+      const enriched = chatsWithUnread.map(
+        (chat) =>
+          enrichChat(chatToObject(chat), {
+            supportAdminId,
+            userRole: "admin",
+          })
+      );
+
+      return res.status(200).json(enriched);
     }
 
-    const bookingByChatId = {};
+    const { chats: bookingChats, bookingByChatId } =
+      await getBookingChatsForUser(req.user._id);
 
-    for (const booking of activeBookings) {
-      bookingByChatId[booking.chat.toString()] = {
-        _id: booking._id,
-        status: booking.status,
-        scheduledAt: booking.scheduledAt,
-        serviceType: booking.serviceType,
-      };
+    let supportChat = null;
+
+    if (
+      BOOKING_ONLY_ROLES.includes(req.user.role) &&
+      supportAdminId
+    ) {
+      try {
+        supportChat = await ensureSupportChat(
+          req.user._id
+        );
+      } catch (error) {
+        console.error(
+          "Support chat ensure failed:",
+          error
+        );
+      }
     }
 
-    const chats = await populateChat(
-      Chat.find({
-        _id: { $in: chatIds },
-        participants: req.user._id,
-      })
-    ).sort({ updatedAt: -1 });
+    const chatMap = new Map();
+
+    for (const chat of bookingChats) {
+      chatMap.set(chat._id.toString(), chat);
+    }
+
+    if (supportChat) {
+      chatMap.set(
+        supportChat._id.toString(),
+        supportChat
+      );
+    }
+
+    const mergedChats = [...chatMap.values()];
 
     const chatsWithUnread =
       await attachUnreadCountsLocal(
-        chats,
+        mergedChats,
         req.user._id
       );
 
-    const enriched = chatsWithUnread.map(
-      (chat) => ({
-        ...chat,
-        activeBooking:
-          bookingByChatId[chat._id.toString()] ??
-          null,
+    const enriched = chatsWithUnread.map((chat) =>
+      enrichChat(chatToObject(chat), {
+        bookingByChatId,
+        supportAdminId,
+        userRole: req.user.role,
       })
+    );
+
+    res.status(200).json(
+      sortChatsWithSupportFirst(enriched)
+    );
+  } catch (error) {
+    return serverError(res, error);
+  }
+};
+
+export const getOrCreateSupportChat = async (
+  req,
+  res
+) => {
+  try {
+    if (
+      !BOOKING_ONLY_ROLES.includes(req.user.role)
+    ) {
+      return res.status(403).json({
+        message: "Forbidden",
+      });
+    }
+
+    const supportAdmin = await getSupportAdmin();
+
+    if (!supportAdmin) {
+      return res.status(503).json({
+        message: "Support is not available",
+      });
+    }
+
+    const populatedChat = await ensureSupportChat(
+      req.user._id
+    );
+
+    const [chatWithUnread] =
+      await attachUnreadCountsLocal(
+        [populatedChat],
+        req.user._id
+      );
+
+    const enriched = enrichChat(
+      chatToObject(chatWithUnread),
+      {
+        supportAdminId: supportAdmin._id,
+        userRole: req.user.role,
+      }
     );
 
     res.status(200).json(enriched);
@@ -151,8 +274,17 @@ export const createOrGetChat = async (
         req.user._id
       );
 
-    res.status(200).json(chatWithUnread);
+    const supportAdmin = await getSupportAdmin();
 
+    const enriched = enrichChat(
+      chatToObject(chatWithUnread),
+      {
+        supportAdminId: supportAdmin?._id,
+        userRole: req.user.role,
+      }
+    );
+
+    res.status(200).json(enriched);
   } catch (error) {
     return serverError(res, error);
   }

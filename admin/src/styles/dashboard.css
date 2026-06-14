@@ -110,9 +110,21 @@
 
 .status-dismissed,
 .status-cancelled,
-.status-declined {
+.status-declined,
+.status-rejected {
   background: #f3f4f6;
   color: #374151;
+}
+
+.status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.rating-stars {
+  color: #f59e0b;
+  font-size: 16px;
+  margin: 4px 0;
 }
 
 .card-actions {

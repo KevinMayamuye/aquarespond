@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { NotificationProvider } from "./context/NotificationContext.jsx";
+import { ChatProvider } from "./context/ChatContext.jsx";
 
 import "./index.css";
 
@@ -15,7 +16,9 @@ createRoot(
     <BrowserRouter>
       <AuthProvider>
         <NotificationProvider>
-          <App />
+          <ChatProvider>
+            <App />
+          </ChatProvider>
         </NotificationProvider>
       </AuthProvider>
     </BrowserRouter>

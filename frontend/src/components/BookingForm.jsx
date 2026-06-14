@@ -1,5 +1,18 @@
 import { useEffect, useRef } from "react";
 
+import SelectWithOther from "./SelectWithOther";
+
+import {
+  resolveSelectWithOther,
+  validateSelectWithOther,
+} from "../utils/resolveSelectWithOther";
+
+const SERVICE_TYPE_OPTIONS = [
+  "Repairs",
+  "Installation",
+  "Maintenance",
+];
+
 const BookingForm = ({
   selectedPlumber,
   onSubmit,
@@ -7,17 +20,11 @@ const BookingForm = ({
   initialValues = null,
   formRef,
 }) => {
-  const serviceTypeRef = useRef(null);
   const addressRef = useRef(null);
   const notesRef = useRef(null);
 
   useEffect(() => {
     if (!initialValues) return;
-
-    if (serviceTypeRef.current) {
-      serviceTypeRef.current.value =
-        initialValues.serviceType || "";
-    }
 
     if (addressRef.current) {
       addressRef.current.value =
@@ -34,11 +41,26 @@ const BookingForm = ({
     e.preventDefault();
 
     const form = new FormData(e.target);
+    const choice = form.get("serviceTypeChoice");
+    const custom = form.get("serviceTypeCustom");
+
+    const validationError =
+      validateSelectWithOther(choice, custom);
+
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    const serviceType = resolveSelectWithOther(
+      choice,
+      custom
+    );
 
     onSubmit({
       plumberId: selectedPlumber._id,
       scheduledAt: form.get("scheduledAt"),
-      serviceType: form.get("serviceType"),
+      serviceType,
       address: form.get("address"),
       notes: form.get("notes"),
     });
@@ -71,19 +93,18 @@ const BookingForm = ({
         />
       </label>
 
-      <label>
-        Service type
-        <input
-          ref={serviceTypeRef}
-          type="text"
-          name="serviceType"
-          placeholder="e.g. Leak repair"
-          defaultValue={
-            initialValues?.serviceType || ""
-          }
-          required
-        />
-      </label>
+      <SelectWithOther
+        key={`${selectedPlumber._id}-${initialValues?.serviceType ?? "new"}`}
+        label="Service type"
+        options={SERVICE_TYPE_OPTIONS}
+        defaultValue={
+          initialValues?.serviceType || ""
+        }
+        selectName="serviceTypeChoice"
+        customName="serviceTypeCustom"
+        otherPlaceholder="Describe the service..."
+        required
+      />
 
       <label>
         Address

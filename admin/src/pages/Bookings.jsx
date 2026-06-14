@@ -81,7 +81,12 @@ const Bookings = () => {
       </header>
 
       <div className="filter-row">
+        <label htmlFor="bookings-status-filter">
+          Status
+        </label>
         <select
+          id="bookings-status-filter"
+          name="statusFilter"
           value={statusFilter}
           onChange={handleFilterChange}
         >

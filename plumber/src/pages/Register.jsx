@@ -20,7 +20,7 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard/jobs");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -46,8 +46,13 @@ const Register = () => {
       >
         <h2>Plumber Register</h2>
 
+        <label htmlFor="plumber-register-username">
+          Username
+        </label>
         <input
+          id="plumber-register-username"
           type="text"
+          name="username"
           placeholder="Username"
           value={formData.username}
           onChange={(e) =>
@@ -59,8 +64,13 @@ const Register = () => {
           required
         />
 
+        <label htmlFor="plumber-register-email">
+          Email
+        </label>
         <input
+          id="plumber-register-email"
           type="email"
+          name="email"
           placeholder="Email"
           value={formData.email}
           onChange={(e) =>
@@ -72,8 +82,13 @@ const Register = () => {
           required
         />
 
+        <label htmlFor="plumber-register-password">
+          Password
+        </label>
         <input
+          id="plumber-register-password"
           type="password"
+          name="password"
           placeholder="Password"
           value={formData.password}
           onChange={(e) =>
@@ -85,8 +100,13 @@ const Register = () => {
           required
         />
 
+        <label htmlFor="plumber-register-phone">
+          Phone
+        </label>
         <input
+          id="plumber-register-phone"
           type="text"
+          name="phone"
           placeholder="Phone"
           value={formData.phone}
           onChange={(e) =>
@@ -97,8 +117,13 @@ const Register = () => {
           }
         />
 
+        <label htmlFor="plumber-register-service-area">
+          Service area
+        </label>
         <input
+          id="plumber-register-service-area"
           type="text"
+          name="serviceArea"
           placeholder="Service area"
           value={formData.serviceArea}
           onChange={(e) =>

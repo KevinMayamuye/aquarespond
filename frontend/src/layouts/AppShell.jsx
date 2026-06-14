@@ -19,6 +19,16 @@ const AppShell = () => {
         </div>
 
         <nav className="app-nav-links">
+          <NavLink
+            to="/dashboard"
+            end
+            className={({ isActive }) =>
+              isActive ? "active" : undefined
+            }
+          >
+            Home
+          </NavLink>
+
           <NavLinkWithDot
             to="/dashboard/book"
             dotKey="book"

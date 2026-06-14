@@ -1,11 +1,11 @@
 import {
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Overview from "./pages/Overview";
 import Jobs from "./pages/Jobs";
 import ReportAssignments from "./pages/ReportAssignments";
 import History from "./pages/History";
@@ -34,9 +34,7 @@ function App() {
       >
         <Route
           index
-          element={
-            <Navigate to="jobs" replace />
-          }
+          element={<Overview />}
         />
         <Route path="jobs" element={<Jobs />} />
         <Route

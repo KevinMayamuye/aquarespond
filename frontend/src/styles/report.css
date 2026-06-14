@@ -75,6 +75,20 @@
   cursor: not-allowed;
 }
 
+.select-with-other {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.select-with-other label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
 .report-photo-field {
   display: flex;
   flex-direction: column;

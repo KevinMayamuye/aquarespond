@@ -20,10 +20,15 @@ const NavLinkWithDot = ({
     >
       {children}
       {dots[dotKey] && (
-        <span
-          className="nav-dot"
-          aria-label="New activity"
-        />
+        <>
+          <span
+            className="nav-dot"
+            aria-hidden="true"
+          />
+          <span className="visually-hidden">
+            , new activity
+          </span>
+        </>
       )}
     </NavLink>
   );

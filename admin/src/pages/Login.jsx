@@ -44,7 +44,11 @@ const Login = () => {
       >
         <h2>Admin Login</h2>
 
+        <label htmlFor="admin-login-email">
+          Email
+        </label>
         <input
+          id="admin-login-email"
           type="email"
           name="email"
           placeholder="Email"
@@ -58,7 +62,11 @@ const Login = () => {
           required
         />
 
+        <label htmlFor="admin-login-password">
+          Password
+        </label>
         <input
+          id="admin-login-password"
           type="password"
           name="password"
           placeholder="Password"

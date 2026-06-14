@@ -69,3 +69,23 @@ export const getAdminBookings = async (status) => {
 
   return response.data;
 };
+
+export const getAdminRatings = async (status) => {
+  const response = await api.get("/admin/ratings", {
+    params: status ? { status } : undefined,
+  });
+
+  return response.data;
+};
+
+export const updateAdminRating = async (
+  id,
+  payload
+) => {
+  const response = await api.patch(
+    `/admin/ratings/${id}`,
+    payload
+  );
+
+  return response.data;
+};

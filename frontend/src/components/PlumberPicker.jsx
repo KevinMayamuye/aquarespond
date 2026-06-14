@@ -1,4 +1,5 @@
 import Avatar from "./Avatar";
+import StarRatingDisplay from "./StarRatingDisplay";
 
 const PlumberPicker = ({
   plumbers,
@@ -36,6 +37,14 @@ const PlumberPicker = ({
 
             <div className="plumber-card-info">
               <strong>{plumber.username}</strong>
+              <StarRatingDisplay
+                averageRating={
+                  plumber.averageRating
+                }
+                ratingCount={
+                  plumber.ratingCount
+                }
+              />
               <span>
                 {plumber.serviceArea ||
                   "Local area"}

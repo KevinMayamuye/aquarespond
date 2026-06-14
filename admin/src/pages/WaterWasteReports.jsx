@@ -228,7 +228,12 @@ const WaterWasteReports = () => {
       </header>
 
       <div className="filter-row">
+        <label htmlFor="reports-status-filter">
+          Status
+        </label>
         <select
+          id="reports-status-filter"
+          name="statusFilter"
           value={statusFilter}
           onChange={handleFilterChange}
         >
@@ -302,7 +307,14 @@ const WaterWasteReports = () => {
 
               {isAssignable && (
                 <div className="assign-row">
+                  <label
+                    htmlFor={`assign-plumber-${report._id}`}
+                  >
+                    Assign plumber
+                  </label>
                   <select
+                    id={`assign-plumber-${report._id}`}
+                    name="assignedPlumber"
                     value={
                       assignDraft[report._id] ??
                       report.assignedPlumber
@@ -359,7 +371,14 @@ const WaterWasteReports = () => {
               )}
 
               <div className="card-actions">
+                <label
+                  htmlFor={`report-status-${report._id}`}
+                >
+                  Report status
+                </label>
                 <select
+                  id={`report-status-${report._id}`}
+                  name="status"
                   value={report.status}
                   onChange={(e) =>
                     handleStatusChange(
@@ -384,7 +403,14 @@ const WaterWasteReports = () => {
               </div>
 
               <div className="card-actions">
+                <label
+                  htmlFor={`admin-notes-${report._id}`}
+                >
+                  Admin notes
+                </label>
                 <textarea
+                  id={`admin-notes-${report._id}`}
+                  name="adminNotes"
                   placeholder="Admin notes"
                   value={
                     notesDraft[report._id] ??

@@ -9,6 +9,8 @@ import Overview from "./pages/Overview";
 import WaterWasteReports from "./pages/WaterWasteReports";
 import Users from "./pages/Users";
 import Bookings from "./pages/Bookings";
+import Ratings from "./pages/Ratings";
+import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -37,6 +39,11 @@ function App() {
           path="bookings"
           element={<Bookings />}
         />
+        <Route
+          path="ratings"
+          element={<Ratings />}
+        />
+        <Route path="chat" element={<Chat />} />
         <Route
           path="profile"
           element={<Profile />}

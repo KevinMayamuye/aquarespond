@@ -90,7 +90,15 @@ const NewChatModal = ({
           </button>
         </div>
 
+        <label
+          htmlFor="new-chat-search"
+          className="visually-hidden"
+        >
+          Search by username
+        </label>
         <input
+          id="new-chat-search"
+          name="search"
           type="text"
           className="modal-search"
           placeholder="Search by username..."

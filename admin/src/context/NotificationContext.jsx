@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 
 import { useAuth } from "../hooks/useAuth";
 import { getAdminStats } from "../services/adminService";
+import { getChats } from "../services/chatService";
 import { socket } from "../socket/socket";
 
 const NotificationContext = createContext(null);
@@ -25,6 +26,14 @@ const ROUTE_CLEAR_MAP = [
   {
     prefix: "/dashboard/bookings",
     key: "bookings",
+  },
+  {
+    prefix: "/dashboard/ratings",
+    key: "ratings",
+  },
+  {
+    prefix: "/dashboard/chat",
+    key: "chat",
   },
 ];
 
@@ -90,6 +99,8 @@ export const NotificationProvider = ({
         reports: "/dashboard/reports",
         users: "/dashboard/users",
         bookings: "/dashboard/bookings",
+        ratings: "/dashboard/ratings",
+        chat: "/dashboard/chat",
       };
 
       return location.pathname.startsWith(
@@ -153,10 +164,46 @@ export const NotificationProvider = ({
       markOverview();
     };
 
+    const handleRatingSubmitted = () => {
+      markDot("ratings");
+      markOverview();
+    };
+
+    const handleNewMessage = (message) => {
+      const senderId =
+        message.sender?._id?.toString() ??
+        message.sender?.toString();
+
+      if (
+        senderId !== user._id?.toString()
+      ) {
+        markDot("chat");
+        markOverview();
+      }
+    };
+
+    const handleChatAdded = () => {
+      markDot("chat");
+      markOverview();
+    };
+
     getAdminStats()
       .then((stats) => {
         if ((stats?.pendingReports ?? 0) > 0) {
           markDot("reports");
+          markOverview();
+        }
+      })
+      .catch(console.error);
+
+    getChats()
+      .then((chats) => {
+        const hasUnread = chats.some(
+          (chat) => (chat.unreadCount || 0) > 0
+        );
+
+        if (hasUnread) {
+          markDot("chat");
           markOverview();
         }
       })
@@ -178,6 +225,12 @@ export const NotificationProvider = ({
       "userRegistered",
       handleUserRegistered
     );
+    socket.on(
+      "ratingSubmitted",
+      handleRatingSubmitted
+    );
+    socket.on("newMessage", handleNewMessage);
+    socket.on("chatAdded", handleChatAdded);
 
     return () => {
       socket.off(
@@ -196,8 +249,20 @@ export const NotificationProvider = ({
         "userRegistered",
         handleUserRegistered
       );
+      socket.off(
+        "ratingSubmitted",
+        handleRatingSubmitted
+      );
+      socket.off(
+        "newMessage",
+        handleNewMessage
+      );
+      socket.off(
+        "chatAdded",
+        handleChatAdded
+      );
     };
-  }, [user?.token, markDot]);
+  }, [user?.token, user?._id, markDot]);
 
   return (
     <NotificationContext.Provider

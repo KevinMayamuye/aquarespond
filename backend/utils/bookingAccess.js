@@ -1,11 +1,54 @@
 import Booking from "../models/Booking.js";
+import Chat from "../models/Chat.js";
+
+import { getSupportAdmin } from "../utils/supportAdmin.js";
 
 export const getActiveBookingForChat = async (chatId) =>
   Booking.findOne({ chat: chatId, status: "accepted" });
 
-export const isChatMessagingAllowed = async (
-  chatId
+export const isSupportChatForUser = async (
+  chatId,
+  user
 ) => {
+  const supportAdmin = await getSupportAdmin();
+
+  if (!supportAdmin) {
+    return false;
+  }
+
+  const chat = await Chat.findById(chatId).select(
+    "participants"
+  );
+
+  if (!chat) {
+    return false;
+  }
+
+  const supportId = supportAdmin._id.toString();
+  const userId = user._id.toString();
+
+  const hasSupport = chat.participants.some(
+    (id) => id.toString() === supportId
+  );
+  const hasUser = chat.participants.some(
+    (id) => id.toString() === userId
+  );
+
+  return hasSupport && hasUser;
+};
+
+export const isChatMessagingAllowed = async (
+  chatId,
+  user
+) => {
+  if (user?.role === "admin") {
+    return isSupportChatForUser(chatId, user);
+  }
+
+  if (await isSupportChatForUser(chatId, user)) {
+    return true;
+  }
+
   const booking =
     await getActiveBookingForChat(chatId);
 
@@ -13,8 +56,29 @@ export const isChatMessagingAllowed = async (
 };
 
 export const assertChatMessagingAllowed = async (
-  chatId
+  chatId,
+  user
 ) => {
+  if (user?.role === "admin") {
+    const allowed = await isSupportChatForUser(
+      chatId,
+      user
+    );
+
+    if (allowed) {
+      return { allowed: true };
+    }
+
+    return {
+      allowed: false,
+      message: "Forbidden",
+    };
+  }
+
+  if (await isSupportChatForUser(chatId, user)) {
+    return { allowed: true };
+  }
+
   const activeBooking =
     await getActiveBookingForChat(chatId);
 

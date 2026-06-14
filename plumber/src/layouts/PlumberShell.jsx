@@ -20,6 +20,16 @@ const PlumberShell = () => {
         </div>
 
         <nav className="app-nav-links">
+          <NavLink
+            to="/dashboard"
+            end
+            className={({ isActive }) =>
+              isActive ? "active" : undefined
+            }
+          >
+            Dashboard
+          </NavLink>
+
           <NavLinkWithDot
             to="/dashboard/jobs"
             dotKey="jobs"

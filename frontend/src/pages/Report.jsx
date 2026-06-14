@@ -1,14 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 
 import PreviewableImage from "../components/PreviewableImage";
+import SelectWithOther from "../components/SelectWithOther";
 
 import {
   getMyWaterWasteReports,
   submitWaterWasteReport,
 } from "../services/reportService";
 import { resizeImageToBase64 } from "../utils/resizeImage";
+import {
+  resolveSelectWithOther,
+  validateSelectWithOther,
+} from "../utils/resolveSelectWithOther";
 
 import "../styles/report.css";
+
+const REPORT_DESCRIPTION_OPTIONS = [
+  "Report leaks",
+  "Burst pipes",
+  "Illegal connections",
+];
 
 const statusLabel = {
   pending: "Pending",
@@ -35,6 +46,7 @@ const Report = () => {
   const [photoData, setPhotoData] =
     useState(null);
   const [error, setError] = useState("");
+  const [formKey, setFormKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -90,12 +102,28 @@ const Report = () => {
     setSubmitting(true);
 
     const form = new FormData(e.target);
+    const choice = form.get("descriptionChoice");
+    const custom = form.get("descriptionCustom");
+
+    const validationError =
+      validateSelectWithOther(choice, custom);
+
+    if (validationError) {
+      setError(validationError);
+      setSubmitting(false);
+      return;
+    }
+
+    const description = resolveSelectWithOther(
+      choice,
+      custom
+    );
 
     try {
       const report =
         await submitWaterWasteReport({
           address: form.get("address"),
-          description: form.get("description"),
+          description,
           severity: form.get("severity"),
           ...(photoData && { photo: photoData }),
         });
@@ -103,6 +131,7 @@ const Report = () => {
       setReports((prev) => [report, ...prev]);
       e.target.reset();
       handleRemovePhoto();
+      setFormKey((prev) => prev + 1);
       alert("Report submitted. An admin will review it.");
     } catch (err) {
       setError(
@@ -138,6 +167,7 @@ const Report = () => {
           <h2>New report</h2>
 
           <form
+            key={formKey}
             className="report-form"
             onSubmit={handleSubmit}
           >
@@ -151,15 +181,14 @@ const Report = () => {
               />
             </label>
 
-            <label>
-              Description
-              <textarea
-                name="description"
-                rows={4}
-                placeholder="Describe the water waste or leak..."
-                required
-              />
-            </label>
+            <SelectWithOther
+              label="Description"
+              options={REPORT_DESCRIPTION_OPTIONS}
+              selectName="descriptionChoice"
+              customName="descriptionCustom"
+              otherPlaceholder="Describe the issue..."
+              required
+            />
 
             <label>
               Severity

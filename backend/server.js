@@ -22,6 +22,7 @@ import fileRoutes from "./routes/fileRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 
 import { notifyChatParticipants } from "./socket/chatNotify.js";
 
@@ -105,6 +106,7 @@ app.use("/api/files", fileRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/ratings", ratingRoutes);
 
 app.get("/", (req, res) => {
   res.send("server is running");

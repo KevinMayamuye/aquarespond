@@ -20,6 +20,11 @@ import {
   completeBooking,
 } from "../controllers/bookingController.js";
 
+import {
+  submitBookingRating,
+  getBookingRating,
+} from "../controllers/ratingController.js";
+
 const router = express.Router();
 
 router.get(
@@ -95,6 +100,20 @@ router.put(
   authMiddleware,
   requireRole("plumber"),
   completeBooking
+);
+
+router.post(
+  "/:id/rating",
+  authMiddleware,
+  requireRole("customer"),
+  submitBookingRating
+);
+
+router.get(
+  "/:id/rating",
+  authMiddleware,
+  requireRole("customer"),
+  getBookingRating
 );
 
 export default router;

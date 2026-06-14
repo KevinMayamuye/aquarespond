@@ -59,6 +59,7 @@
   background: #fff;
   cursor: pointer;
   text-align: left;
+  width: 100%;
 }
 
 .plumber-card.selected {
@@ -99,11 +100,26 @@
 }
 
 .booking-form input,
-.booking-form textarea {
+.booking-form textarea,
+.booking-form select {
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font: inherit;
+}
+
+.select-with-other {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.select-with-other label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
 }
 
 .booking-form button {
@@ -185,7 +201,8 @@
 
 .booking-message-btn,
 .booking-rebook-btn,
-.booking-cancel-btn {
+.booking-cancel-btn,
+.booking-rate-btn {
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
@@ -206,6 +223,177 @@
 .booking-cancel-btn {
   background: #fff;
   border: 1px solid #d1d5db;
+}
+
+.booking-rate-btn {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.booking-rating-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rating-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.rating-status-badge.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.rating-status-badge.status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.rating-status-badge.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.star-rating-display {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.star-rating-display.empty {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.star-rating-stars .star {
+  color: #d1d5db;
+}
+
+.star-rating-stars .star.filled {
+  color: #f59e0b;
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  border: none;
+  background: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #d1d5db;
+  padding: 0;
+}
+
+.star-btn.filled {
+  color: #f59e0b;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.modal-close {
+  border: none;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-message {
+  margin: 0;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+.modal-error {
+  color: #c0392b;
+}
+
+.rating-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rating-modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.rating-modal-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+}
+
+.rating-modal-form button[type="submit"] {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rating-modal-plumber {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+}
+
+.rating-modal-service {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 @media (max-width: 900px) {

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
+import Home from "./pages/Home";
 import Book from "./pages/Book";
 import History from "./pages/History";
 import Report from "./pages/Report";
@@ -48,9 +49,7 @@ function App() {
       >
         <Route
           index
-          element={
-            <Navigate to="book" replace />
-          }
+          element={<Home />}
         />
         <Route path="chat" element={<Chat />} />
         <Route path="book" element={<Book />} />

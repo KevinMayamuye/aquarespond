@@ -29,7 +29,7 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard/book");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -113,8 +113,16 @@ const Register = () => {
             size="lg"
           />
 
+          <label
+            htmlFor="register-avatar"
+            className="visually-hidden"
+          >
+            Profile photo
+          </label>
           <input
             ref={fileInputRef}
+            id="register-avatar"
+            name="avatar"
             type="file"
             accept="image/*"
             className="profile-file-input"
@@ -134,7 +142,11 @@ const Register = () => {
           </button>
         </div>
 
+        <label htmlFor="register-username">
+          Username
+        </label>
         <input
+          id="register-username"
           type="text"
           name="username"
           placeholder="Username"
@@ -144,7 +156,11 @@ const Register = () => {
           required
         />
 
+        <label htmlFor="register-email">
+          Email
+        </label>
         <input
+          id="register-email"
           type="email"
           name="email"
           placeholder="Email"
@@ -153,7 +169,11 @@ const Register = () => {
           required
         />
 
+        <label htmlFor="register-password">
+          Password
+        </label>
         <input
+          id="register-password"
           type="password"
           name="password"
           placeholder="Password"

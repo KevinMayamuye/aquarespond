@@ -17,7 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard/jobs");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -43,7 +43,11 @@ const Login = () => {
       >
         <h2>Plumber Login</h2>
 
+        <label htmlFor="plumber-login-email">
+          Email
+        </label>
         <input
+          id="plumber-login-email"
           type="email"
           name="email"
           placeholder="Email"
@@ -57,7 +61,11 @@ const Login = () => {
           required
         />
 
+        <label htmlFor="plumber-login-password">
+          Password
+        </label>
         <input
+          id="plumber-login-password"
           type="password"
           name="password"
           placeholder="Password"

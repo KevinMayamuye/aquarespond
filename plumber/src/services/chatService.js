@@ -5,3 +5,30 @@ export const getChats = async () => {
 
   return response.data;
 };
+
+export const createChat = async (userId) => {
+  const response = await api.post(
+    "/chats",
+    { userId }
+  );
+
+  return response.data;
+};
+
+export const createGroupChat = async (
+  name,
+  memberIds
+) => {
+  const response = await api.post(
+    "/chats/group",
+    { name, memberIds }
+  );
+
+  return response.data;
+};
+
+export const getOrCreateSupportChat = async () => {
+  const response = await api.post("/chats/support");
+
+  return response.data;
+};

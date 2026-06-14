@@ -6,6 +6,9 @@ import { getIO } from "../socket/socketManager.js";
 import { notifyAdmins } from "../utils/notifyAdmins.js";
 import { serverError } from "../utils/serverError.js";
 import { populateReport } from "./reportController.js";
+import {
+  getPlumberRatingSummaries,
+} from "../utils/plumberRatings.js";
 
 const userFields =
   "username email role phone serviceArea isAvailable profilePicture createdAt";
@@ -233,7 +236,31 @@ export const getAdminUsers = async (req, res) => {
       .select(userFields)
       .sort({ createdAt: -1 });
 
-    res.status(200).json(users);
+    const plumberIds = users
+      .filter((user) => user.role === "plumber")
+      .map((user) => user._id);
+
+    const summaryMap =
+      await getPlumberRatingSummaries(plumberIds);
+
+    const enriched = users.map((user) => {
+      const plain = user.toObject();
+
+      if (user.role === "plumber") {
+        const summary = summaryMap.get(
+          user._id.toString()
+        );
+
+        plain.averageRating =
+          summary?.averageRating ?? null;
+        plain.ratingCount =
+          summary?.ratingCount ?? 0;
+      }
+
+      return plain;
+    });
+
+    res.status(200).json(enriched);
   } catch (error) {
     return serverError(res, error);
   }

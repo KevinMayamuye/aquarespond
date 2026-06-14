@@ -1,5 +1,10 @@
 import User from "../models/User.js";
 import { serverError } from "../utils/serverError.js";
+import {
+  attachRatingSummary,
+  getPlumberRatingSummaries,
+  getPlumberReviews,
+} from "../utils/plumberRatings.js";
 
 const publicPlumberFields =
   "username profilePicture serviceArea isAvailable isOnline lastSeen phone";
@@ -13,7 +18,16 @@ export const listPlumbers = async (req, res) => {
       .select(publicPlumberFields)
       .sort({ username: 1 });
 
-    res.status(200).json(plumbers);
+    const summaryMap =
+      await getPlumberRatingSummaries(
+        plumbers.map((plumber) => plumber._id)
+      );
+
+    const withRatings = plumbers.map((plumber) =>
+      attachRatingSummary(plumber, summaryMap)
+    );
+
+    res.status(200).json(withRatings);
   } catch (error) {
     return serverError(res, error);
   }
@@ -32,7 +46,22 @@ export const getPlumberById = async (req, res) => {
       });
     }
 
-    res.status(200).json(plumber);
+    const summaryMap =
+      await getPlumberRatingSummaries([
+        plumber._id,
+      ]);
+    const withSummary = attachRatingSummary(
+      plumber,
+      summaryMap
+    );
+    const reviews = await getPlumberReviews(
+      plumber._id
+    );
+
+    res.status(200).json({
+      ...withSummary,
+      reviews,
+    });
   } catch (error) {
     return serverError(res, error);
   }

@@ -2,6 +2,7 @@ import Booking from "../models/Booking.js";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import Message from "../models/Message.js";
+import Rating from "../models/Rating.js";
 
 import { getIO } from "../socket/socketManager.js";
 import { notifyAdmins } from "../utils/notifyAdmins.js";
@@ -257,6 +258,44 @@ export const getBookingHistory = async (
         status: { $in: CLOSED_STATUSES },
       }).sort({ updatedAt: -1 })
     );
+
+    if (role === "customer") {
+      const bookingIds = bookings.map(
+        (booking) => booking._id
+      );
+
+      const ratings = bookingIds.length
+        ? await Rating.find({
+            booking: { $in: bookingIds },
+            customer: req.user._id,
+          }).select(
+            "booking score comment status"
+          )
+        : [];
+
+      const ratingByBooking = new Map(
+        ratings.map((rating) => [
+          rating.booking.toString(),
+          {
+            score: rating.score,
+            comment: rating.comment,
+            status: rating.status,
+          },
+        ])
+      );
+
+      const enriched = bookings.map((booking) => {
+        const plain = booking.toObject();
+        plain.customerRating =
+          ratingByBooking.get(
+            booking._id.toString()
+          ) ?? null;
+
+        return plain;
+      });
+
+      return res.status(200).json(enriched);
+    }
 
     res.status(200).json(bookings);
   } catch (error) {

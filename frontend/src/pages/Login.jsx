@@ -18,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard/book");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -53,7 +53,11 @@ const Login = () => {
       >
         <h2>Login</h2>
 
+        <label htmlFor="customer-login-email">
+          Email
+        </label>
         <input
+          id="customer-login-email"
           type="email"
           name="email"
           placeholder="Email"
@@ -62,7 +66,11 @@ const Login = () => {
           required
         />
 
+        <label htmlFor="customer-login-password">
+          Password
+        </label>
         <input
+          id="customer-login-password"
           type="password"
           name="password"
           placeholder="Password"

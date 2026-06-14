@@ -13,6 +13,11 @@ import {
   getAdminBookings,
 } from "../controllers/adminController.js";
 
+import {
+  getAdminRatings,
+  updateAdminRating,
+} from "../controllers/ratingController.js";
+
 const router = express.Router();
 
 router.use(authMiddleware, requireRole("admin"));
@@ -39,5 +44,12 @@ router.get("/users", getAdminUsers);
 router.patch("/users/:id", updateAdminUser);
 
 router.get("/bookings", getAdminBookings);
+
+router.get("/ratings", getAdminRatings);
+
+router.patch(
+  "/ratings/:id",
+  updateAdminRating
+);
 
 export default router;

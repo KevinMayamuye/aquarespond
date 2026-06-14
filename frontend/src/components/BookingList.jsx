@@ -1,3 +1,11 @@
+import StarRatingDisplay from "./StarRatingDisplay";
+
+const ratingStatusLabel = {
+  pending: "Pending approval",
+  approved: "Published",
+  rejected: "Not published",
+};
+
 const statusLabel = {
   pending: "Pending",
   accepted: "Accepted",
@@ -14,11 +22,18 @@ const BookingList = ({
   onCancel,
   onMessage,
   onRebook,
+  onRate,
   variant = "active",
 }) => {
   const isHistory = variant === "history";
+  const isRatingPrompt =
+    variant === "rating-prompt";
 
   if (bookings.length === 0) {
+    if (isRatingPrompt) {
+      return null;
+    }
+
     return (
       <p className="book-empty">
         {isHistory
@@ -54,7 +69,27 @@ const BookingList = ({
             {formatDate(booking.scheduledAt)}
           </p>
 
-          {!isHistory && (
+          {booking.customerRating &&
+            !isRatingPrompt && (
+            <div className="booking-rating-summary">
+              <StarRatingDisplay
+                averageRating={
+                  booking.customerRating.score
+                }
+                ratingCount={1}
+                size="sm"
+              />
+              <span
+                className={`rating-status-badge status-${booking.customerRating.status}`}
+              >
+                {ratingStatusLabel[
+                  booking.customerRating.status
+                ] || booking.customerRating.status}
+              </span>
+            </div>
+          )}
+
+          {!isHistory && !isRatingPrompt && (
             <div className="booking-actions">
               {booking.status === "accepted" &&
                 booking.chat && (
@@ -95,21 +130,37 @@ const BookingList = ({
             </div>
           )}
 
-          {isHistory &&
-            booking.status === "completed" &&
-            onRebook && (
-              <div className="booking-actions">
-                <button
-                  type="button"
-                  className="booking-rebook-btn"
-                  onClick={() =>
-                    onRebook(booking)
-                  }
-                >
-                  Rebook
-                </button>
-              </div>
-            )}
+          {(isHistory || isRatingPrompt) && (
+            <div className="booking-actions">
+              {booking.status === "completed" &&
+                !booking.customerRating &&
+                onRate && (
+                  <button
+                    type="button"
+                    className="booking-rate-btn"
+                    onClick={() =>
+                      onRate(booking)
+                    }
+                  >
+                    Rate plumber
+                  </button>
+                )}
+
+              {isHistory &&
+                booking.status === "completed" &&
+                onRebook && (
+                  <button
+                    type="button"
+                    className="booking-rebook-btn"
+                    onClick={() =>
+                      onRebook(booking)
+                    }
+                  >
+                    Rebook
+                  </button>
+                )}
+            </div>
+          )}
         </div>
       ))}
     </div>
